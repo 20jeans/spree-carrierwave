@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = ['lib']
 
-  s.add_dependency 'spree_core', '>= 1.0.0'
-  s.add_dependency 'carrierwave', '~> 0.5.8'
-  s.add_dependency 'fog', '>= 1.1.2'
-  s.add_dependency 'mini_magick', '>= 1.2.5'
+  s.add_dependency 'spree_core', '~> 2.1'
+  s.add_dependency 'carrierwave', '~> 0.9'
+  s.add_dependency 'fog', '~> 1.18'
+  s.add_dependency 'mini_magick', '~> 3.6'
 end

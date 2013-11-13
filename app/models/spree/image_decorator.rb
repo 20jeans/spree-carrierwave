@@ -2,36 +2,44 @@ Spree::Image.class_eval do
   class Uploader < CarrierWave::Uploader::Base
     include CarrierWave::Compatibility::Paperclip
     include CarrierWave::MiniMagick
+    include CarrierWave::MimeTypes
+  
+    process :set_content_type
 
-    storage :fog
+    # Choose what kind of storage to use for this uploader:
+    if Rails.env.production?
+      storage :fog
+    else
+      storage :file
+    end
 
     # Spree looks in attachment#errors, so just delegate to model#errors
-    delegate :errors, :to => :model
+    delegate :errors, to: :model
 
-    # Match the path defined in Spree::Image
+      # Match the path defined in Spree::Image
     def paperclip_path
-      "assets/products/:id/:style/:basename.:extension"
+      "assets/products/:id/:basename_:style.:extension"
     end
 
     # These are the versions defined in Spree::Image
     version :mini do
-      process :resize_to_limit => [48, 48]
+      process resize_to_limit: [48, 48]
     end
 
     version :small do
-      process :resize_to_limit => [100, 100]
+      process resize_to_limit: [100, 100]
     end
 
     version :product do
-      process :resize_to_limit => [240, 240]
+      process resize_to_limit: [240, 240]
     end
 
     version :large do
-      process :resize_to_limit => [600, 600]
+      process resize_to_limit: [600, 600]
     end
   end
 
-  mount_uploader :attachment, Uploader, :mount_on => :attachment_file_name
+  mount_uploader :attachment, Uploader, mount_on: :attachment_file_name
 
   # Get rid of the paperclip callbacks
 
